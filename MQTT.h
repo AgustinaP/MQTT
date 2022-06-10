@@ -12,14 +12,14 @@
 
 typedef enum {
     Reserved,   // 0
-    CONNECT,    // 1-
-    CONNACK,    // 2-
-    PUBLISH,    // 3-
-    PUBACK,     // 4-
-    PUBREC,     // 5 QoS = 1
-    PUBREL,     // 6 QoS = 2
-    PUBCOMP,    // 7 QoS = 3
-    SUBSCRIBE,  // 8-
+    CONNECT,    // 1
+    CONNACK,    // 2
+    PUBLISH,    // 3
+    PUBACK,     // 4
+    PUBREC,     // 5 
+    PUBREL,     // 6 
+    PUBCOMP,    // 7 
+    SUBSCRIBE,  // 8
     SUBACK,     // 9
     UNSUBSCRIBE,// 10
     UNSUBACK,   // 11
@@ -57,12 +57,6 @@ class Message {
         virtual int pack (uint8_t * buffer){return 0;};
         void print_buffer(void);
 
-        //Type get_type() const{return type;}
-        //void set_type (Type type_){type = type_;}
-        //void set_header_flag(uint8_t headers_flags_){header_flags=headers_flags_&0x0F;}
-
-        //unpack a message from a given buffer 
-        //virtual int unpack (uint8_t * buffer){return 0;};
 };
 
 bool receive_msg(int socket,  uint8_t* buffer); //false = ERROR
@@ -154,7 +148,6 @@ class PINGREQ_msg:public Message{
     private:
         int set_header(uint8_t* buffer);
     public:
-
         PINGREQ_msg(uint8_t * buffer,int& errors);
         PINGREQ_msg();
         ~PINGREQ_msg(){};
@@ -175,7 +168,6 @@ class PINGRESP_msg:public Message{
 
 class SUBSCRIBE_msg:public Message{
     private:
-
         uint16_t packet_ID;
         std::list<std::string> topic;
         std::list<uint16_t> topic_length;
@@ -183,12 +175,9 @@ class SUBSCRIBE_msg:public Message{
 
         int get_header(uint8_t* buffer, int& errors);
         int get_topic_info(uint8_t* buffer, int& errors);
-
         int set_header(uint8_t* buffer);
         int set_header_v(uint8_t* buffer);
         int set_payload(uint8_t* buffer);
-
-
     public:
         SUBSCRIBE_msg(uint8_t* buffer, int& errors);
         SUBSCRIBE_msg(uint16_t packet_ID_, std::list<std::string> topic_, std::list<uint8_t> QoS_);
@@ -197,8 +186,6 @@ class SUBSCRIBE_msg:public Message{
         int pack(uint8_t * buffer);
         uint16_t get_packet_ID();
         std::list<std::string>& get_topics();
-
-
 };
 
 class SUBACK_msg:public Message{
@@ -258,8 +245,6 @@ class UNSUBACK_msg:public Message{
 
         int pack(uint8_t * buffer);
 };
-
-
 
 class PUBLISH_msg:public Message{
     private:

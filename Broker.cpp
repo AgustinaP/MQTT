@@ -308,6 +308,7 @@ void Broker::add_topics(Client_t* c,std::list<std::string>& topics){
         }
     }
 }
+
 void Broker::send_publish_retained_msg(Client_t* c,std::list<std::string>& topics){
     std::list<std::string>::iterator list_it;
     for(list_it = topics.begin();list_it != topics.end();list_it++){
@@ -504,6 +505,4 @@ void consume_routine(Broker* br){
         }
     }
 } 
-
-
 

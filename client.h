@@ -39,6 +39,7 @@ class Client{
         int socketfd; 
         std::list<std::string> topics;
         std::mutex coutMutex;
+     
 
         Client();
         ~Client(){close(socketfd);};
@@ -218,13 +219,14 @@ void send_routine(Client* client){
                 client->coutMutex.lock();
                 std::cout<<"Enter flags (1: retain): "<<std::endl;
                 client->coutMutex.unlock();
-                std::cin>>flags;
-                std::string payload;   
+                std::cin>>flags;  
                 client->coutMutex.lock();
                 std::cout<<"Enter payload: "<<std::endl;
                 client->coutMutex.unlock();
-                std::cin>>payload;
-                client->publish_broker(topic,flags,payload,0);
+                std::cin.ignore();
+                std::string c;
+                std::getline(std::cin,c);
+                client->publish_broker(topic,flags,c,0);//"Hola mundo",0);//client->payload,0);
                 break;
             }
             case 6:{
@@ -290,7 +292,7 @@ void receive_routine(Client* client){
                 client->coutMutex.lock();
                 std::cout<<"Topic received: "<<publish_m.get_topic()<<std::endl;
                 std::cout<<"Payload received: "<<publish_m.get_payload()<<std::endl;
-                client->coutMutex.lock();
+                client->coutMutex.unlock();
                 break;
             }
             case 0: {
